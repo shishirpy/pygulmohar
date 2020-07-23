@@ -4,7 +4,7 @@ import zmq
 
 from .zhelpers import dump
 # MajorDomo protocol constants:
-import pymajordomo.MDP as MDP
+import pygulmohar.MDP as MDP
 
 class MajorDomoWorker(object):
     """Majordomo Protocol Worker API, Python version

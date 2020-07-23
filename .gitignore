@@ -1,5 +1,3 @@
 *.pyc
 .vscode/
-pymajordomo.egg-info/
-pymajordomo.egg-info/dependency_links.txt
 testing/

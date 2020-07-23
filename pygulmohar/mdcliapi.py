@@ -2,7 +2,7 @@ import logging
 
 import zmq
 
-import pymajordomo.MDP as MDP
+import pygulmohar.MDP as MDP
 from .zhelpers import dump
 
 class MajorDomoClient(object):
