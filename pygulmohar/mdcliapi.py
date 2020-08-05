@@ -55,8 +55,10 @@ class MajorDomoClient(object):
                 level=logging.INFO)
         self.reconnect_to_broker()
 
-    def reconnect_to_broker(self):
-        """Connect or reconnect to broker"""
+    def __reconnect_to_broker__(self):
+        """
+            Connect or reconnect to broker
+        """
         if self.client:
             self.poller.unregister(self.client)
             self.client.close()
@@ -73,6 +75,14 @@ class MajorDomoClient(object):
 
             Takes ownership of request message and destroys it when sent.
             Returns the reply message or None if there was no reply.
+
+            Parameters
+            ------------
+            service : bytes
+                name of the service, eg. b"service1"
+            
+            request : bytes
+
         """
         if not isinstance(request, list):
             request = [request]
@@ -110,7 +120,7 @@ class MajorDomoClient(object):
             else:
                 if retries:
                     logging.warn("W: no reply, reconnecting…")
-                    self.reconnect_to_broker()
+                    self.__reconnect_to_broker__()
                 else:
                     logging.warn("W: permanent error, abandoning")
                     break
