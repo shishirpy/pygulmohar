@@ -75,10 +75,12 @@ class MajorDomoWorker(object):
         logging.basicConfig(format="%(asctime)s %(message)s",
                             datefmt="%Y-%m-%d %H:%M:%S",
                             level=logging.INFO)
-        self.reconnect_to_broker()
+        self.__reconnect_to_broker__()
 
-    def reconnect_to_broker(self):
-        """Connect or reconnect to broker"""
+    def __reconnect_to_broker__(self):
+        """
+            Connect or reconnect to broker
+        """
         if self.worker:
             self.poller.unregister(self.worker)
             self.worker.close()
@@ -90,16 +92,25 @@ class MajorDomoWorker(object):
             logging.info("I: connecting to broker at %s…", self.broker)
 
         # Register service with broker
-        self.send_to_broker(MDP.W_READY, self.service, [])
+        self.__send_to_broker__(MDP.W_READY, self.service, [])
 
         # If liveness hits zero, queue is considered disconnected
         self.liveness = self.HEARTBEAT_LIVENESS
         self.heartbeat_at = time.time() + 1e-3 * self.heartbeat
 
-    def send_to_broker(self, command, option=None, msg=None):
-        """Send message to broker.
+    def __send_to_broker__(self, command, option=None, msg=None):
+        """
+            Send message to broker.
 
-        If no msg is provided, creates one internally
+            If no msg is provided, creates one internally
+
+            Parameters
+            ------------
+            command:
+
+            option:
+
+            msg: 
         """
         if msg is None:
             msg = []
@@ -116,14 +127,20 @@ class MajorDomoWorker(object):
         self.worker.send_multipart(msg)
 
     def recv(self, reply=None):
-        """Send reply, if any, to broker and wait for next request."""
+        """
+            Send reply, if any, to broker and wait for next request.
+
+            Parameters
+            ------------
+            reply: list
+        """
         # Format and send the reply if we were provided one
         assert reply is not None or not self.__expect_reply__
 
         if reply is not None:
             assert self.reply_to is not None
             reply = [self.reply_to, b''] + reply
-            self.send_to_broker(MDP.W_REPLY, msg=reply)
+            self.__send_to_broker__(MDP.W_REPLY, msg=reply)
 
         self.__expect_reply__ = True
 
@@ -164,7 +181,7 @@ class MajorDomoWorker(object):
                     # Do nothing for heartbeats
                     pass
                 elif command == MDP.W_DISCONNECT:
-                    self.reconnect_to_broker()
+                    self.__reconnect_to_broker__()
                 else :
                     logging.error("E: invalid input message: ")
                     dump(msg)
@@ -178,11 +195,11 @@ class MajorDomoWorker(object):
                         time.sleep(1e-3*self.reconnect)
                     except KeyboardInterrupt:
                         break
-                    self.reconnect_to_broker()
+                    self.__reconnect_to_broker__()
 
             # Send HEARTBEAT if it's time
             if time.time() > self.heartbeat_at:
-                self.send_to_broker(MDP.W_HEARTBEAT)
+                self.__send_to_broker__(MDP.W_HEARTBEAT)
                 self.heartbeat_at = time.time() + 1e-3*self.heartbeat
 
         logging.warn("W: interrupt received, killing worker…")
