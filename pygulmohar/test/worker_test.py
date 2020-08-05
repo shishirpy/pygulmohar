@@ -1,18 +1,22 @@
 import time
+import pytest
+import zmq
 from pygulmohar.mdwrkapi import MajorDomoWorker
-from pygulmohar.mdcliapi import MajorDomoClient
+# from pygulmohar.mdcliapi import MajorDomoClient
 
 class TestWorker():
-    def test_create_worker(self):
-        main() # start broker at localhost:555
-        worker = MajorDomoWorker("tcp://localhost:5555", b"sq", verbose=True)
-        client = MajorDomoClient("tcp://localhost:5555", False)
-        request = b"10"
-        time.sleep(1)
-        client_reply = client.send(b"sq", request)
-        worker_reply = None
+    def test_reconnect_to_borker(self):
 
-        request = worker.recv(worker_reply)
-        print(request)
-        assert False
+        test_service = MajorDomoWorker("tcp://localhost:5555", b"test_service", False)
+
+
+        test_service.__reconnect_to_broker__();
+
+        print(type(test_service.worker))
+
+        assert isinstance(test_service.worker, zmq.Socket)
+        assert test_service.worker.type == zmq.DEALER
+        assert test_service.worker.linger == 0
+        assert test_service.broker == "tcp://localhost:5555"
+
 
