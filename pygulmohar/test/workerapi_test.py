@@ -4,7 +4,7 @@ import zmq
 from pygulmohar.mdwrkapi import MajorDomoWorker
 # from pygulmohar.mdcliapi import MajorDomoClient
 
-class TestWorker():
+class TestWorkerAPI():
     def test_reconnect_to_borker(self):
 
         test_service = MajorDomoWorker("tcp://localhost:5555", b"test_service", False)
@@ -18,5 +18,7 @@ class TestWorker():
         assert test_service.worker.type == zmq.DEALER
         assert test_service.worker.linger == 0
         assert test_service.broker == "tcp://localhost:5555"
+
+
 
 
