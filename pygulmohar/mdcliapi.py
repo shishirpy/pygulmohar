@@ -1,13 +1,3 @@
-
-
-"""Majordomo Protocol Client API, Python version.
-
-Implements the MDP/Worker spec at http:#rfc.zeromq.org/spec:7.
-
-Author: Min RK <benjaminrk@gmail.com>
-Based on Java example by Arkadiusz Orzechowski
-"""
-
 import logging
 
 import zmq
@@ -16,9 +6,37 @@ import pygulmohar.MDP as MDP
 from pygulmohar.zhelpers import dump
 
 class MajorDomoClient(object):
-    """Majordomo Protocol Client API, Python version.
+    """
+        Majordomo Protocol Client API, Python version.
 
-      Implements the MDP/Worker spec at http:#rfc.zeromq.org/spec:7.
+        Implements the MDP/Worker spec at http:#rfc.zeromq.org/spec:7.
+
+
+        Parameters
+        ---------------
+
+        broker: str
+            address of the broker
+
+        verbose: bool
+
+
+        Attributes
+        --------------
+        ctx: zmq.Context
+
+        client: zmq.Socket
+
+
+        poller: zmq.Poller
+            polling request and replies
+
+        retries: int
+            number of retries allowed
+
+        timeout: int
+            millisecond timeout
+
     """
     broker = None
     ctx = None
@@ -50,10 +68,11 @@ class MajorDomoClient(object):
             logging.info("I: connecting to broker at %s…", self.broker)
 
     def send(self, service, request):
-        """Send request to broker and get reply by hook or crook.
+        """
+            Send request to broker and get reply by hook or crook.
 
-        Takes ownership of request message and destroys it when sent.
-        Returns the reply message or None if there was no reply.
+            Takes ownership of request message and destroys it when sent.
+            Returns the reply message or None if there was no reply.
         """
         if not isinstance(request, list):
             request = [request]
