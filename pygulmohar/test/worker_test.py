@@ -1,7 +1,6 @@
 import time
-from pymajordomo.mdwrkapi import MajorDomoWorker
-from pymajordomo.mdbroker import MajorDomoBroker, main
-from pymajordomo.mdcliapi import MajorDomoClient
+from pygulmohar.mdwrkapi import MajorDomoWorker
+from pygulmohar.mdcliapi import MajorDomoClient
 
 class TestWorker():
     def test_create_worker(self):

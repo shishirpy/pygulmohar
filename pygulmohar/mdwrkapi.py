@@ -3,7 +3,6 @@ import time
 import zmq
 
 from .zhelpers import dump
-# MajorDomo protocol constants:
 import pygulmohar.MDP as MDP
 
 class MajorDomoWorker(object):
@@ -66,10 +65,10 @@ class MajorDomoWorker(object):
 
     def __init__(self, broker, service, verbose=False):
         self.broker = broker
-        if isinstance(service, str):
-            self.service = service.encode()
-        else:
-            raise TypeError("Service name should be a string.")
+        # if isinstance(service, str):
+        self.service = service
+        # else:
+        #     raise TypeError("Service name should be a string.")
         self.verbose = verbose
         self.ctx = zmq.Context()
         self.poller = zmq.Poller()

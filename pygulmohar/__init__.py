@@ -1,5 +1,5 @@
-from pygulmohar import zhelpers as zhelpers
-from pygulmohar import MDP as MDP
+from pygulmohar import zhelpers
+from pygulmohar import MDP
 from pygulmohar.mdwrkapi import MajorDomoWorker
 from pygulmohar.mdcliapi import MajorDomoClient
 
